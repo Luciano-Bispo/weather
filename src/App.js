@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import GlobalStyle from './assets/Style/GlobalStyle';
+
+import Header from './components/Header';
+import ClimateAnimation from './components/ClimateAnimation';
+import PrevisionToday from './components/PrevisionToday';
+import FuturePrevisions from './components/FuturePrevisions';
 
 function App() {
+
+	const [data, setData] = useState({});
+
+useEffect(() =>{
+  fetch("https://api.hgbrasil.com/weather?format=json-cors&key=89f16b64")
+  .then(res => res.json())
+  .then(json => {setData(json.results); console.log(json.results)});
+}, [])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <GlobalStyle />
+      <Header />
+      <ClimateAnimation data={data} />
+      <PrevisionToday data={data} />
+      <FuturePrevisions data={data} />
     </div>
   );
 }
